@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ChallengeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,21 +41,32 @@ Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')-
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('billing', function () {
-        return view('pages.billing');
-    })->name('billing');
-    Route::get('tables', function () {
-        return view('pages.tables');
-    })->name('tables');
-    Route::get('rtl', function () {
-        return view('pages.rtl');
-    })->name('rtl');
+    
+
+    Route::get('/challenges', [ChallengeController::class, 'index'])->name('challenges');
+    Route::post('/challenges', [ChallengeController::class, 'store']);
+
+    Route::get('schools', [SchoolController::class, 'index'])->name('schools');
+    Route::post('schools', [SchoolController::class, 'store']);
+
+    Route::get('upload', function () {
+        return view('pages.upload');
+    })->name('upload');
     Route::get('virtual-reality', function () {
         return view('pages.virtual-reality');
     })->name('virtual-reality');
     Route::get('notifications', function () {
         return view('pages.notifications');
     })->name('notifications');
+
+    Route::get('/schools', [SchoolController::class, 'index'])->name('schools');
+    Route::post('/schools', [SchoolController::class, 'store'])->name('schools');
+
+    // Route::get('/upload', 'App\Http\Controllers\ChallengeController@showUploadForm')->name('upload.form');
+    Route::post('/upload', 'App\Http\Controllers\ChallengeController@uploadFiles')->name('upload.files');
+;
+
+
     Route::get('static-sign-in', function () {
         return view('pages.static-sign-in');
     })->name('static-sign-in');
